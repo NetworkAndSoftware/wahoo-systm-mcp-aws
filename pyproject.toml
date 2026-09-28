@@ -109,7 +109,7 @@ build_command = "uv lock --upgrade-package wahoo-systm-mcp"
 
 [dependency-groups]
 dev = [
-    "boto3>=1.40.0,<2.0.0",   # admin CLI and Lambda entry point (Lambda's runtime provides it)
+    "boto3[crt]>=1.40.0,<2.0.0",  # admin CLI (crt: for `aws login` credentials) and Lambda entry point
     "pip-audit>=2.9.0",
     "prek>=0.2.0",
     "pytest>=9.0.2,<10.0.0",
