@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
+    "cryptography>=46.0.3,<47.0.0",
     "fastmcp>=3.0.0b1,<4.0.0",
     "httpx>=0.28.1,<1.0.0",
     "pydantic>=2.12.5,<3.0.0",
@@ -53,10 +54,13 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "src/**/__main__.py" = ["T201"]    # print allowed in CLI entry
 "src/**/main.py" = ["T201"]        # print allowed in CLI entry
+"src/**/remote/admin.py" = ["T201"]  # print allowed in CLI entry
 "src/**/tools/*.py" = ["PLR0913", "D417"]  # MCP tools: many params, ctx is framework-injected
+"scripts/*.py" = ["INP001", "S603"]  # standalone scripts running uv
 "tests/**" = [
     "S101",    # assert allowed in tests
     "S105",    # hardcoded passwords in test fixtures
+    "S106",    # hardcoded passwords in test fixtures
     "ARG",     # unused arguments (fixtures)
     "SLF001",  # private member access (testing internals)
     "PLC0415", # imports in tests - test isolation
@@ -105,6 +109,7 @@ build_command = "uv lock --upgrade-package wahoo-systm-mcp"
 
 [dependency-groups]
 dev = [
+    "boto3>=1.40.0,<2.0.0",   # admin CLI and Lambda entry point (Lambda's runtime provides it)
     "pip-audit>=2.9.0",
     "prek>=0.2.0",
     "pytest>=9.0.2,<10.0.0",
