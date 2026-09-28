@@ -105,7 +105,16 @@ exclude_lines = [
 commit_message = "chore(release): {version}"
 version_toml = ["pyproject.toml:project.version"]
 version_variables = ["manifest.json:version"]
-build_command = "uv lock --upgrade-package wahoo-systm-mcp"
+# Runs in the python-semantic-release action's container, which has no uv. Building here,
+# after the version bump, gives release artifacts the new version; git add puts the bumped
+# uv.lock in the release commit.
+build_command = """
+    set -e
+    python -m pip install --quiet uv
+    uv lock --upgrade-package wahoo-systm-mcp
+    git add uv.lock
+    uv build
+"""
 
 [dependency-groups]
 dev = [
